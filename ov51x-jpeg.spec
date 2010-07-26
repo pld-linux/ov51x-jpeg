@@ -8,12 +8,20 @@
 Summary:	Linux OVCam Drivers
 Summary(pl.UTF-8):	Linuksowe sterowniki do kamer OVCam
 Name:		ov51x-jpeg
-Version:	1.5.7
+Version:	1.5.9
 Release:	%{_rel}
 License:	GPL
 Group:		Applications/Multimedia
-Source0: http://www.rastageeks.org/downloads/ov51x-jpeg/ov51x-jpeg-1.5.7.tar.gz
-# Source0-md5:	7de1f426a48bdb55218913e2d713f813
+Source0:	http://www.rastageeks.org/downloads/ov51x-jpeg/%{name}-%{version}.tar.gz
+# Source0-md5:	95041de8e908f1548df3d4e1f6ed2a94
+# https://svn.pardus.org.tr/pardus/2009/devel/kernel/pae/drivers/module-pae-ov51x-jpeg/files/ov51x-jpeg-2.6.30.patch
+Patch0:		%{name}-2.6.30.patch
+# https://svn.pardus.org.tr/pardus/2009/devel/kernel/pae/drivers/module-pae-ov51x-jpeg/files/ov51x-jpeg-2.6.29.patch
+Patch1:		%{name}-2.6.29.patch
+# https://svn.pardus.org.tr/pardus/2009/devel/kernel/pae/drivers/module-pae-ov51x-jpeg/files/kernel_messages.patch
+Patch2:		kernel_messages.patch
+# https://svn.pardus.org.tr/pardus/2009/devel/kernel/pae/drivers/module-pae-ov51x-jpeg/files/v4lcompat_old_kernels_only.patch
+Patch3:		v4lcompat_old_kernels_only.patch
 URL:		http://www.rastageeks.org/ov51x-jpeg/
 %if %{with kernel}
 %{?with_dist_kernel:BuildRequires:	kernel%{_alt_kernel}-module-build >= 3:2.6.7}
@@ -49,6 +57,10 @@ Sterownik dla Linuksa do kamer internetowych OVCam.
 
 %prep
 %setup -q
+%patch0 -p1
+%patch1 -p1
+%patch2 -p1
+%patch3 -p1
 #sed -i -e '/#include <linux.videodev.h>/a #include <media/v4l2-dev.h>' \
 #	*.[hc]
 #sed -e '/EXTRA_CFLAGS/s/$/ -DHAVE_V4L2 -DCONFIG_VIDEO_PROC_FS/' -i Makefile
